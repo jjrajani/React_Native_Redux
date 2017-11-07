@@ -4,4 +4,4 @@ Albums - A simple list
 
 Auth - A simple Firebase Auth process
 
-teck_stack - A simple Redux app with animation
+Teck_Stack - A simple Redux app with animation
