@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Text } from 'react-native';
 import { Card, CardSection, Input, Button } from './common';
-import { emailChanged } from '../actions';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
 
 class LoginForm extends Component {
   onEmailChange = text => this.props.emailChanged(text);
+  onPasswordChange = text => this.props.passwordChanged(text);
+  onButtonPress = () => {
+    const { email, password } = this.props;
+    this.props.loginUser({ email, password });
+  };
   render() {
-    const { email } = this.props;
+    const { email, password, error } = this.props;
     return (
       <Card>
         <CardSection>
@@ -19,24 +25,47 @@ class LoginForm extends Component {
           />
         </CardSection>
         <CardSection>
-          <Input label="Password" secureTextEntry placeholder="password" />
+          <Input
+            onChangeText={this.onPasswordChange}
+            label="Password"
+            secureTextEntry
+            placeholder="password"
+            value={password}
+          />
         </CardSection>
+        <Text style={styles.errorTextStyle}>{error}</Text>
         <CardSection>
-          <Button>Login</Button>
+          <Button onPress={this.onButtonPress}>Login</Button>
         </CardSection>
       </Card>
     );
   }
 }
 
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red'
+  }
+};
+
 LoginForm.PropTypes = {
-  email: PropTypes.string.isRequired
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
 };
 
 function mapStateToProps({ auth }) {
-  return { email: auth.email };
+  const { email, password, error } = auth;
+  return {
+    email,
+    password,
+    error
+  };
 }
 
 export default connect(mapStateToProps, {
-  emailChanged
+  emailChanged,
+  passwordChanged,
+  loginUser
 })(LoginForm);
