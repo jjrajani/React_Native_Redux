@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { Text, TouchableWithoutFeedback, View } from 'react-native';
 import { CardSection } from './common';
 
 class EmployeeListItem extends Component {
+  onRowPress = () => {
+    Actions.employeeEdit({ employee: this.props.employee });
+  };
   render() {
     const { employee } = this.props;
-    // console.log('item', employee);
     return (
-      <CardSection>
-        <Text style={styles.titleStyle}>{employee.name}</Text>
-      </CardSection>
+      <TouchableWithoutFeedback onPress={this.onRowPress}>
+        <View>
+          <CardSection>
+            <Text style={styles.titleStyle}>{employee.name}</Text>
+          </CardSection>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
