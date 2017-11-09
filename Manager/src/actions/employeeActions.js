@@ -4,7 +4,8 @@ import {
   EMPLOYEE_UPDATE,
   EMPLOYEE_CREATE,
   EMPLOYEES_FETCH_SUCCESS,
-  EMPLOYEE_SAVE_SUCCESS
+  EMPLOYEE_SAVE_SUCCESS,
+  CLEAR_FORM
 } from './types';
 
 export const employeeUpdate = ({ prop, value }) => ({
@@ -52,4 +53,8 @@ export const employeeSave = ({ name, phone, shift, uid }) => {
         Actions.pop();
       });
   };
+};
+
+export const clearForm = () => dispatch => {
+  dispatch({ type: CLEAR_FORM });
 };

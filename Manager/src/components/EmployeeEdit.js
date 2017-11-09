@@ -2,28 +2,49 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { connect } from 'react-redux';
+import Communications from 'react-native-communications';
 import { employeeUpdate, employeeSave } from '../actions';
-import { Card, CardSection, Button } from './common';
+import { Card, CardSection, Button, ConfirmModal } from './common';
 import EmployeeForm from './EmployeeForm';
 
 class EmployeeEdit extends Component {
+  state = { showModal: false };
   componentWillMount() {
     _.each(this.props.employee, (value, prop) => {
       this.props.employeeUpdate({ prop, value });
     });
   }
-  onButtonPress = () => {
+  onSavePress = () => {
     const { name, phone, shift } = this.props;
     const { uid } = this.props.employee;
     this.props.employeeSave({ name, phone, shift, uid });
+  };
+  onTextPress = () => {
+    const { phone, shift } = this.props;
+
+    Communications.text(phone, `Your upcoming shift is on ${shift}`);
+  };
+  onFirePress = () => {
+    console.log('fire!');
+    this.setState({ showModal: !this.state.showModal });
   };
   render() {
     return (
       <Card>
         <EmployeeForm {...this.props} />
         <CardSection>
-          <Button onPress={this.onButtonPress}>Save Changes</Button>
+          <Button onPress={this.onSavePress}>Save Changes</Button>
         </CardSection>
+        <CardSection>
+          <Button onPress={this.onTextPress}>Text Schedule</Button>
+        </CardSection>
+        <CardSection>
+          <Button onPress={this.onFirePress}>Fire Employee</Button>
+        </CardSection>
+
+        <ConfirmModal visible={this.state.showModal}>
+          Are you sure you want to delete this?
+        </ConfirmModal>
       </Card>
     );
   }
