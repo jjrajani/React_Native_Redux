@@ -8,3 +8,4 @@ export const LOGOUT_USER = 'logout_user';
 
 // Employee Types
 export const EMPLOYEE_UPDATE = 'employee_update';
+export const EMPLOYEE_CREATE = 'employee_create';
