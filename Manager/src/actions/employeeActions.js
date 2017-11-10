@@ -5,7 +5,8 @@ import {
   EMPLOYEE_CREATE,
   EMPLOYEES_FETCH_SUCCESS,
   EMPLOYEE_SAVE_SUCCESS,
-  CLEAR_FORM
+  CLEAR_FORM,
+  EMPLOYEE_DELETE
 } from './types';
 
 export const employeeUpdate = ({ prop, value }) => ({
@@ -57,4 +58,18 @@ export const employeeSave = ({ name, phone, shift, uid }) => {
 
 export const clearForm = () => dispatch => {
   dispatch({ type: CLEAR_FORM });
+};
+
+export const employeeDelete = uid => {
+  const { currentUser } = firebase.auth();
+
+  return () => {
+    firebase
+      .database()
+      .ref(`/users/${currentUser.uid}/employees/${uid}`)
+      .remove()
+      .then(() => {
+        Actions.pop();
+      });
+  };
 };
